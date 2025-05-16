@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/anonymous961/todo-cli/internal/storage"
 )
 
 func main() {
@@ -23,4 +25,6 @@ func main() {
 
 	fmt.Println(storagePath)
 
+	store := storage.NewExcelStorage(storagePath)
+	fmt.Println(store)
 }
