@@ -47,12 +47,17 @@ func NewListCommand(store storage.ExcelStorage) *cobra.Command {
 			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 			fmt.Fprintln(w, "ID\tTASK\tCATEGORY\tPRIORITY\tDUE DATE\tCOMPLETE")
 			for _, todo := range filtered {
-				complete := " "
+				complete := "No"
 				if todo.Complete {
-					complete = "✓"
+					complete = "Yes"
+				}
+
+				shortID := todo.ID
+				if len(shortID) > 8 {
+					shortID = todo.ID[:8] + "..."
 				}
 				fmt.Fprintf(w, "%s\t%s\t%s\t%d\t%s\t%s\n",
-					todo.ID[:8], // Show shortened ID
+					shortID, // Show shortened ID
 					todo.Task,
 					todo.Category,
 					todo.Priority,
