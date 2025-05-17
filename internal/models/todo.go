@@ -1,8 +1,7 @@
 package models
 
 import (
-	"log"
-	"os/exec"
+	"math/rand"
 	"time"
 )
 
@@ -29,9 +28,11 @@ func NewTodo(task string, category string, priority int, dueDate time.Time) *Tod
 }
 
 func generateID() string {
-	newUUID, err := exec.Command("uuidgen").Output()
-	if err != nil {
-		log.Fatal(err)
+	// rand.Seed(time.Now().UnixNano())
+	const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, 8)
+	for i := range b {
+		b[i] = chars[rand.Intn(len(chars))]
 	}
-	return string(newUUID)
+	return string(b)
 }
