@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -24,12 +23,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(storagePath)
+	// fmt.Println(storagePath)
 
 	store := storage.NewExcelStorage(storagePath)
 	rootCmd := commands.NewRootCommand(*store)
 
-	fmt.Println(store)
+	// fmt.Println(store)
 
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)

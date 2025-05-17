@@ -18,16 +18,9 @@ func NewExcelStorage(filePath string) *ExcelStorage {
 }
 
 func (s *ExcelStorage) ensureFileExists() error {
-	f := excelize.NewFile()
-	defer func() {
-		if err := f.Close(); err != nil {
-			fmt.Println(err)
-		}
-	}()
-
-	Index, _ := f.GetSheetIndex("Todos")
-	// fmt.Printf("The index of the excel is :%v", Index)
-	if Index == -1 {
+	f, err := excelize.OpenFile(s.filePath)
+	if err != nil {
+		f := excelize.NewFile()
 		f.NewSheet("Todos")
 		f.DeleteSheet("Sheet1")
 		fmt.Printf("New sheet created")
@@ -38,8 +31,16 @@ func (s *ExcelStorage) ensureFileExists() error {
 			cell, _ := excelize.CoordinatesToCellName(i+1, i)
 			f.SetCellValue("Todos", cell, header)
 		}
+		return f.SaveAs(s.filePath)
 	}
-	return f.SaveAs(s.filePath)
+
+	defer f.Close()
+
+	if Index, _ := f.GetSheetIndex("Todos"); Index == -1 {
+		f.NewSheet("Todos")
+		return f.Save()
+	}
+	return nil
 }
 
 func (s *ExcelStorage) Add(todo *models.Todo) error {
