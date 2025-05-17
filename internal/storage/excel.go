@@ -26,10 +26,11 @@ func (s *ExcelStorage) ensureFileExists() error {
 	}()
 
 	Index, _ := f.GetSheetIndex("Todos")
-	fmt.Printf("The index of the excel is :%v", Index)
+	// fmt.Printf("The index of the excel is :%v", Index)
 	if Index == -1 {
 		f.NewSheet("Todos")
 		f.DeleteSheet("Sheet1")
+		fmt.Printf("New sheet created")
 
 		headers := []string{"ID", "Task", "Complete", "Category", "Due Date", "Priority", "Created At"}
 
@@ -56,7 +57,7 @@ func (s *ExcelStorage) Add(todo *models.Todo) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("The number of rows are %v", rows)
+	// fmt.Printf("The number of rows are %v", rows)
 
 	rowNum := len(rows) + 1
 

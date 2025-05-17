@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/anonymous961/todo-cli/internal/commands"
 	"github.com/anonymous961/todo-cli/internal/storage"
 )
 
@@ -26,5 +27,11 @@ func main() {
 	fmt.Println(storagePath)
 
 	store := storage.NewExcelStorage(storagePath)
+	rootCmd := commands.NewRootCommand(*store)
+
 	fmt.Println(store)
+
+	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
 }
