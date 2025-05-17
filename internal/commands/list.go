@@ -18,7 +18,7 @@ func NewListCommand(store storage.ExcelStorage) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "list",
-		Short: "List add todos",
+		Short: "List all todos",
 		Run: func(cmd *cobra.Command, args []string) {
 			todos, err := store.List()
 

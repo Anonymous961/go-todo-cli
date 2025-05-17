@@ -19,6 +19,7 @@ func NewRootCommand(store storage.ExcelStorage) *cobra.Command {
 		NewAddCommand(store),
 		NewListCommand(store),
 		NewDeleteCommand(store),
+		NewCompleteCommand(store),
 	)
 
 	return cmd

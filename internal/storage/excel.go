@@ -141,7 +141,7 @@ func (s *ExcelStorage) Delete(id string) error {
 
 	for i, row := range rows {
 		if i == 0 {
-			return nil
+			continue
 		}
 
 		if len(row) > 0 && row[0] == id {
@@ -179,6 +179,14 @@ func (s *ExcelStorage) Delete(id string) error {
 	return fmt.Errorf("todo with ID %s not found", id)
 }
 
+func convertToInterfaceSlice(strs []string) []interface{} {
+	res := make([]interface{}, len(strs))
+	for i, v := range strs {
+		res[i] = v
+	}
+	return res
+}
+
 func (s *ExcelStorage) Complete(id string) error {
 	f, err := excelize.OpenFile(s.filePath)
 	if err != nil {
@@ -205,12 +213,4 @@ func (s *ExcelStorage) Complete(id string) error {
 	}
 
 	return fmt.Errorf("todo with ID %v not found", id)
-}
-
-func convertToInterfaceSlice(strs []string) []interface{} {
-	res := make([]interface{}, len(strs))
-	for i, v := range strs {
-		res[i] = v
-	}
-	return res
 }
