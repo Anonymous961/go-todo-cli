@@ -124,3 +124,93 @@ func (s *ExcelStorage) List() ([]*models.Todo, error) {
 
 	return todos, nil
 }
+
+func (s *ExcelStorage) Delete(id string) error {
+	f, err := excelize.OpenFile(s.filePath)
+	if err != nil {
+		return err
+	}
+
+	defer f.Close()
+
+	rows, err := f.GetRows("Todos")
+
+	if err != nil {
+		return err
+	}
+
+	for i, row := range rows {
+		if i == 0 {
+			return nil
+		}
+
+		if len(row) > 0 && row[0] == id {
+			var newRows [][]interface{}
+
+			for ri, r := range rows {
+				if ri != i {
+					newRows = append(newRows, convertToInterfaceSlice(r))
+				}
+			}
+
+			f.RemoveRow("Todos", 1) // Remove header
+			for range rows {
+				f.RemoveRow("Todos", 1)
+			}
+
+			// Write header
+			headers := []string{"ID", "Task", "Complete", "Category", "Due Date", "Priority", "Created At"}
+			for i, header := range headers {
+				cell, _ := excelize.CoordinatesToCellName(i+1, 1)
+				f.SetCellValue("Todos", cell, header)
+			}
+
+			// Write remaining rows
+			for ri, row := range newRows {
+				for ci, val := range row {
+					cell, _ := excelize.CoordinatesToCellName(ci+1, ri+2)
+					f.SetCellValue("Todos", cell, val)
+				}
+			}
+
+			return f.Save()
+		}
+	}
+	return fmt.Errorf("todo with ID %s not found", id)
+}
+
+func (s *ExcelStorage) Complete(id string) error {
+	f, err := excelize.OpenFile(s.filePath)
+	if err != nil {
+		return err
+	}
+
+	defer f.Close()
+
+	rows, err := f.GetRows("Todos")
+	if err != nil {
+		return err
+	}
+
+	for i, row := range rows {
+		if i == 0 {
+			continue
+		}
+
+		if len(row) > 0 && row[0] == id {
+			cell, _ := excelize.CoordinatesToCellName(3, i+1)
+			f.SetCellValue("Todos", cell, true)
+			return f.Save()
+		}
+	}
+
+	return fmt.Errorf("todo with ID %v not found", id)
+}
+
+func convertToInterfaceSlice(strs []string) []interface{} {
+	res := make([]interface{}, len(strs))
+	for i, v := range strs {
+		res[i] = v
+	}
+	return res
+}
