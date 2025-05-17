@@ -9,6 +9,13 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+type Storage interface {
+	Add(todo *models.Todo) error
+	List() ([]*models.Todo, error)
+	Delete(id string) error
+	Complete(id string) error
+}
+
 type ExcelStorage struct {
 	filePath string
 }
@@ -214,3 +221,5 @@ func (s *ExcelStorage) Complete(id string) error {
 
 	return fmt.Errorf("todo with ID %v not found", id)
 }
+
+var _ Storage = (*ExcelStorage)(nil)

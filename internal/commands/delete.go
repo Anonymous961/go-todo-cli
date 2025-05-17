@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewDeleteCommand(store storage.ExcelStorage) *cobra.Command {
+func NewDeleteCommand(store storage.Storage) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "delete <id>",
 		Short: "Delete a todo",

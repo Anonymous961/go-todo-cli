@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewAddCommand(store storage.ExcelStorage) *cobra.Command {
+func NewAddCommand(store storage.Storage) *cobra.Command {
 	var (
 		category string
 		priority int

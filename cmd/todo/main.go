@@ -26,7 +26,7 @@ func main() {
 	// fmt.Println(storagePath)
 
 	store := storage.NewExcelStorage(storagePath)
-	rootCmd := commands.NewRootCommand(*store)
+	rootCmd := commands.NewRootCommand(store)
 
 	// fmt.Println(store)
 

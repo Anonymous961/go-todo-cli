@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewRootCommand(store storage.ExcelStorage) *cobra.Command {
+func NewRootCommand(store storage.Storage) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "todo",
 		Short: "A simple todo CLI with excel storage",

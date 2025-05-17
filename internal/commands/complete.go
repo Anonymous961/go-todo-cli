@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewCompleteCommand(store storage.ExcelStorage) *cobra.Command {
+func NewCompleteCommand(store storage.Storage) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "complete <id>",
 		Short: "update task completion",
